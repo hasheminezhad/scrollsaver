@@ -1,0 +1,9 @@
+﻿.alwaysShow
+{
+    position: absolute;
+    top: expression((10 + (t=document.documentElement.scrollTop?document.documentElement.scrollTop:document.body.scrollTop)) + 'px');
+}
+img
+{
+	behavior: url("iepngfix.htc");
+}
