@@ -4,6 +4,9 @@
 // This source is licensed under Common Public License Version 1.0 (CPL)
 // You can reach me at hasheminezhad at gmail dot com
 // History:
+// 2014-12-13 Fourth Release
+// - Change localStorage to sessionStorage
+// - Add expiration time to document.cookie
 // 2014-08-04 Third Release
 // - Add loadScroll and saveScroll to the window object
 // - Code cleanup
@@ -22,7 +25,7 @@
         var positions;
         //load scroll positions
         try {
-            positions = (localStorage.getItem(key) || '').split('|');
+            positions = (sessionStorage.getItem(key) || '').split('|');
         } catch (ex) {
             var cookieList = document.cookie.split(';');
             for (var i = cookieList.length - 1; i >= 0 && !positions; i--) {
@@ -76,9 +79,13 @@
 
         //save scroll positions
         try {
-            localStorage.setItem(key, positions.join('|'));
+            sessionStorage.setItem(key, positions.join('|'));
         } catch (ex) {
-            document.cookie = key + '=' + positions.join('|') + ';';
+            var now = new Date();
+            var time = now.getTime();
+            var expireTime = time + 1000 * 60; //1 min
+            now.setTime(expireTime);
+            document.cookie = key + '=' + positions.join('|') + ';expires=' + now.toGMTString() + ';path=/';
         }
     };
 })(window);
